@@ -11,3 +11,7 @@ const quotes = [
   "It does not matter how slowly you go as long as you do not stop. - Confucius"
 ];
 
+function renderQuote() {
+  const randomNumber = Math.floor(Math.random() * 10)
+  return quotes[randomNumber]
+}
