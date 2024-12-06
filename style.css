@@ -1,0 +1,29 @@
+body{
+  height: 100dvh;
+  width: 100dvw;
+  background-color: #e5d3b3;
+  color: #664229;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  row-gap: 20px;
+}
+
+.quotes-button{
+  all: unset;
+  background-color: #664229;
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.quotes-button:active{
+  background-color: #503420;
+}
+
+.quotes-container{
+  width: 500px;
+  font-size: 32px;
+}
