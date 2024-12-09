@@ -84,6 +84,14 @@ const quotes = [
   "The only thing standing between you and your goal is the story you keep telling yourself as to why you can't achieve it. - Jordan Belfort"
 ];
 
+async function fetchQuote(){
+   const quote = await fetch("http://api.quotable.io/random")
+   const quoteObject = await quote.json()
+   console.log(quoteObject)
+}
+
+fetchQuote()
+
 document.querySelector('.quotes-button').addEventListener('click', renderQuoteHTML)
 
 function renderQuote() {
