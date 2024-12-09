@@ -100,17 +100,21 @@ async function fetchQuote(){
   }
 }
 
-fetchQuote()
+
 
 document.querySelector('.quotes-button').addEventListener('click', renderQuoteHTML)
 
-function renderQuote() {
-  const randomNumber = Math.floor(Math.random() * quotes.length)
-  return quotes[randomNumber]
+async function renderQuote() {
+  const APIQuotes = await fetchQuote()
+  if(APIQuotes.errorMessage){
+    const randomNumber = Math.floor(Math.random() * quotes.length)
+    return quotes[randomNumber]
+  }
+  return `${APIQuotes.content} - ${APIQuotes.author}`
 }
 
-function renderQuoteHTML() {
-  document.querySelector('.quotes-container').innerHTML = renderQuote()
+async function renderQuoteHTML() {
+  document.querySelector('.quotes-container').innerHTML = await renderQuote();
 }
 
 renderQuoteHTML()
