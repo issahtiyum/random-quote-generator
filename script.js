@@ -87,13 +87,34 @@ const quotes = [
 
 document.querySelector('.quotes-button').addEventListener('click', renderQuoteHTML)
 
-function renderQuote() {
+async function renderQuoteHTML() {
+  document.querySelector('.quotes-container').innerHTML = await renderQuote();
+}
+
+async function renderQuote() {
+  const APIQuotes = await fetchQuote()
+  if(!APIQuotes.errorMessage){
+    return `${APIQuotes.content} - ${APIQuotes.author}`
+  }
   const randomNumber = Math.floor(Math.random() * quotes.length)
   return quotes[randomNumber]
 }
 
-function renderQuoteHTML() {
-  document.querySelector('.quotes-container').innerHTML = renderQuote()
+
+async function fetchQuote(){
+  try{
+    const quote = await fetch("http://api.quotable.io/random")
+    if(quote.status >= 400){
+      const errorObject = await quote.json(); 
+      throw new Error(errorObject.message || 'Unexpected error');   
+    }
+    const quoteObject = await quote.json()
+    return quoteObject
+  }
+    catch(error){
+      console.error("Error fetching quote:", error.message);
+      return {errorMessage: error.message};
+  }
 }
 
 renderQuoteHTML()
