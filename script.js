@@ -84,6 +84,22 @@ const quotes = [
   "The only thing standing between you and your goal is the story you keep telling yourself as to why you can't achieve it. - Jordan Belfort"
 ];
 
+document.querySelector('.quotes-button').addEventListener('click', renderQuoteHTML)
+
+async function renderQuoteHTML() {
+  document.querySelector('.quotes-container').innerHTML = await renderQuote();
+}
+
+async function renderQuote() {
+  const APIQuotes = await fetchQuote()
+  if(!APIQuotes.errorMessage){
+    return `${APIQuotes.content} - ${APIQuotes.author}`
+  }
+  const randomNumber = Math.floor(Math.random() * quotes.length)
+  return quotes[randomNumber]
+}
+
+
 async function fetchQuote(){
   try{
     const quote = await fetch("http://api.quotable.io/random")
@@ -98,23 +114,6 @@ async function fetchQuote(){
       console.error("Error fetching quote:", error.message);
       return {errorMessage: error.message};
   }
-}
-
-
-
-document.querySelector('.quotes-button').addEventListener('click', renderQuoteHTML)
-
-async function renderQuote() {
-  const APIQuotes = await fetchQuote()
-  if(APIQuotes.errorMessage){
-    const randomNumber = Math.floor(Math.random() * quotes.length)
-    return quotes[randomNumber]
-  }
-  return `${APIQuotes.content} - ${APIQuotes.author}`
-}
-
-async function renderQuoteHTML() {
-  document.querySelector('.quotes-container').innerHTML = await renderQuote();
 }
 
 renderQuoteHTML()
