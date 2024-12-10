@@ -116,5 +116,3 @@ async function fetchQuote(){
       return {errorMessage: error.message};
   }
 }
-
-renderQuoteHTML()

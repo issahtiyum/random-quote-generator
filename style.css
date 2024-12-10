@@ -27,3 +27,20 @@ body{
   width: 500px;
   font-size: 32px;
 }
+
+.interaction-container{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 500px;
+}
+
+.like-button-container{
+  width: 30px;
+  cursor: pointer;
+}
+
+.like-button{
+  width: 100%;
+  height: auto;
+}
