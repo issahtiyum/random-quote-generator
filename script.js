@@ -1,15 +1,14 @@
 import { quotes, Quote } from "./data.js";
 
-document.querySelector('.quotes-button').addEventListener('click', renderQuoteHTML)
-
-async function renderQuoteHTML() {
-  document.querySelector('.quotes-container').innerHTML = await renderQuote();
-}
+document.querySelector('.quotes-button').addEventListener('click', async () => {
+  const quoteObject = await renderQuote();
+  document.querySelector('.quotes-container').innerHTML = `${quoteObject.content} - ${quoteObject.author}`
+})
 
 async function renderQuote() {
   const APIQuote = await fetchQuote()
   if(!APIQuote.errorMessage){
-    return `${APIQuote.content} - ${APIQuote.author}`
+    return new Quote(APIQuote)
   }
   const randomNumber = Math.floor(Math.random() * quotes.length)
   return quotes[randomNumber]
