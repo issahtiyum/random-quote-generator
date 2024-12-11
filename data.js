@@ -11,13 +11,20 @@ export class Quote {
   renderQuote() {
     return {
       content: this.content,
-      author: this.author
+      author: this.author,
+      isFavorite: this.isFavorite
     }
   } 
  
   toggleLike() {
-   this.isFavorite ? this.removeFromFavorites(favorites) : this.addToFavorites(favorites)
-   this.isFavorite = !this.isFavorite
+   if (this.isFavorite){
+    this.isFavorite = false;
+    this.removeFromFavorites(favorites);
+   } else {
+    this.isFavorite = true;
+    this.addToFavorites(favorites)
+   }
+   localStorage.setItem('favorites', JSON.stringify(favorites))
   }
  
   addToFavorites(favorites) {
@@ -32,7 +39,7 @@ export class Quote {
   }
  }
  
- export const favorites = []
+ export const favorites = JSON.parse(localStorage.getItem('favorites')) || []
  
  export const quotes = [
   {
