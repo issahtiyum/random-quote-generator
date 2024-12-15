@@ -8,14 +8,22 @@
 </head>
 <body>
   <div class="tabs-container">
-    <div class="new-quote">Generate</div>
-    <div class="favorites">Favorites</div>
+    <div class="new-quote tab-button active">Generate</div>
+    <div class="favorites tab-button">Favorites</div>
   </div>
-  <div class="content-container generate-new-quote-container">
-    <div class="quotes-container">Click on 'Generate' to get your quote to inspire you today!</div>
-    <div class="interaction-container">
-      <button class="quotes-button primary-button">Generate</button>
-      <div class="like-button-container">
+  <div class="content-container">
+    <div class="new-quote-container tab-panel active">
+      <div class="quotes-container">Click on 'Generate' to get your quote to inspire you today!</div>
+      <div class="interaction-container">
+        <button class="quotes-button primary-button">Generate</button>
+        <div class="like-button-container">
+        </div>
+      </div>
+    </div>
+    <div class="favorites-container tab-panel">
+      <div class="no-favorite-message">You have no favorite quotes</div> 
+      <div class="back-to-new-quotes-button">
+        <button class="primary-button">Back to New Quotes</button>
       </div>
     </div>
   </div>

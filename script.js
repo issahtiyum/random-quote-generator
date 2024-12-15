@@ -4,25 +4,28 @@ let currentQuoteObject;
 let generateQuoteButton = document.querySelector('.quotes-button');
 let likeButton = document.querySelector(".like-button-container");
 const quotesContainer = document.querySelector('.quotes-container');
-const favoritesTabButton = document.querySelector('.favorites');
-const contentContainer = document.querySelector('.content-container');
-const generateTabButton = document.querySelector('.new-quote');
+const tabButtons = document.querySelectorAll('.tab-button')
+const tabPanels = document.querySelectorAll('.tab-panel')
 
-favoritesTabButton.addEventListener('click', () => {
-  contentContainer.innerHTML = renderFavorites(favorites)
-  contentContainer.classList.replace('generate-new-quote-container', 'favorites-container')
-})
+tabButtons.forEach((tabButton) => {
+  tabButton.addEventListener('click', (event) => {
+    event.target.classList.contains('favorites') ? switchTab('favorites') : switchTab('new-quote')
+  })
+});
 
-generateTabButton.addEventListener('click', () => {
-  contentContainer.innerHTML =  renderQuoteTab(currentQuoteObject)
-  generateQuoteButton = document.querySelector('.quotes-button');
-  likeButton = document.querySelector(".like-button-container");
-  contentContainer.classList.remove('no-favorites')
-  contentContainer.classList.replace('favorites-container', 'generate-new-quote-container')
-})
+function switchTab(tabButtonName) {
+  tabButtons.forEach((button) =>
+    button.classList.toggle("active", button.classList.contains(tabButtonName))
+  );
 
+  tabPanels.forEach((panel) =>
+    panel.classList.toggle("active", panel.classList.contains(`${tabButtonName}-container`))
+  );
 
+  if (tabButtonName === 'favorites') document.querySelector(`.${tabButtonName}-container`)
+    .innerHTML = renderFavorites(favorites);
 
+}
 
 generateQuoteButton.addEventListener('click', async () => {
   currentQuoteObject = await renderQuote();
@@ -44,6 +47,7 @@ likeButton.addEventListener('click', () => {
   } else {
     likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`
   }
+
 })
 
 async function renderQuote() {
@@ -73,7 +77,6 @@ async function fetchQuote(){
 
 function renderFavorites(favorites) {
   if (!favorites.length) {
-    contentContainer.classList.add('no-favorites')
     return `<div class="no-favorite-message">You have no favorite quotes</div> 
   <div class="back-to-new-quotes-button">
     <button class="primary-button">Back to New Quotes</button>
@@ -87,14 +90,4 @@ function renderFavorites(favorites) {
 </p>
 `})
   return favoritesContainer
-}
-
-function renderQuoteTab(currentQuoteObject){
-  return `<div class="quotes-container">${currentQuoteObject ? `${currentQuoteObject.content} - ${currentQuoteObject.author}` : "Click on 'Generate' to get your quote to inspire you today!"}</div>
-  <div class="interaction-container">
-    <button class="quotes-button primary-button">Generate</button>
-    <div class="like-button-container">
-    </div>
-  </div>
-  `
 }

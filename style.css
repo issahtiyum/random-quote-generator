@@ -11,6 +11,8 @@ body{
   row-gap: 8px;
 }
 
+
+
 .primary-button{
   all: unset;
   background-color: #664229;
@@ -61,7 +63,14 @@ body{
   width: 500px;
 }
 
-.generate-new-quote-container{
+.new-quote-container, .favorites-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.new-quote-container{
   row-gap: 16px;
 }
 
@@ -77,6 +86,7 @@ body{
   align-items: center;
   justify-content: center;
 }
+
 .favorites, .new-quote{
  cursor: pointer;
 }
@@ -88,3 +98,15 @@ body{
   font-size: 16px;
 }
 
+.tab-panel{
+  display: none;
+}
+
+.tab-panel.active{
+  display: flex;
+}
+
+.tab-button.active {
+  font-weight: bold;
+  border-bottom: 2px solid #664229;
+}
