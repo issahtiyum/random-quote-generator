@@ -8,10 +8,10 @@ body{
   align-items: center;
   justify-content: center;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  row-gap: 20px;
+  row-gap: 8px;
 }
 
-.quotes-button{
+.primary-button{
   all: unset;
   background-color: #664229;
   color: white;
@@ -44,3 +44,47 @@ body{
   width: 100%;
   height: auto;
 }
+
+.tabs-container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 24px;
+  width: 500px;
+}
+
+.content-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 500px;
+}
+
+.generate-new-quote-container{
+  row-gap: 16px;
+}
+
+.favorites-container{
+  row-gap: 0;
+  font-size: 20px;
+}
+
+.no-favorite-message{
+  height: 100px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.favorites, .new-quote{
+ cursor: pointer;
+}
+
+.back-to-new-quotes-button{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  font-size: 16px;
+}
+
