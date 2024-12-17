@@ -1,5 +1,6 @@
 body{
-  height: 100dvh;
+  padding: 40px 0;
+  min-height: 100dvh;
   width: 100dvw;
   background-color: #e5d3b3;
   color: #664229;
@@ -9,6 +10,7 @@ body{
   justify-content: center;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   row-gap: 8px;
+  overflow-x: hidden;
 }
 
 
@@ -40,6 +42,9 @@ body{
 .like-button-container, .delete-button-container{
   width: 30px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .like-button, .delete-button{

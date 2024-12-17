@@ -18,14 +18,7 @@ tabButtons.forEach((tabButton) => {
 generateQuoteButton.addEventListener('click', async () => {
   currentQuoteObject = await renderQuote();
   quotesContainer.innerHTML = `${currentQuoteObject.content} - ${currentQuoteObject.author}`
-  likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`
-
-  favorites.forEach((favoriteQuote) => {
-    if (currentQuoteObject.isFavorite ||
-      (currentQuoteObject.content == favoriteQuote.content && currentQuoteObject.author == favoriteQuote.author)) {
-      likeButton.innerHTML = `<img src="images/full-heart.png" alt="like-button" class="like-button">`
-    }
-  })
+  likeButton.innerHTML = `<img src="images/${currentQuoteObject.isFavorite ? 'full-heart' : 'empty-heart'}.png" alt="like-button" class="like-button">`
 })
 
 likeButton.addEventListener('click', () => {
@@ -34,18 +27,24 @@ likeButton.addEventListener('click', () => {
 })
 
 favoritesContainer.addEventListener('click', (event) => {
-  if (!favorites.length && event.target.classList.contains('back-to-new-quotes')){
+  if (event.target.classList.contains('back-to-new-quotes')){
     switchTab('new-quote')
     return
   }
-
   const index = event.target.getAttribute('data-index')
-  favorites[index].isFavorite = false;
-  favorites.splice(index, 1)
-  localStorage.setItem('favorites', JSON.stringify(favorites))
-
-  renderFavorites(favorites)
+  const quoteToRemove = favorites[index]
+  quoteToRemove.removeFromFavorites(favorites, index)
   favoritesContainer.innerHTML = renderFavorites(favorites);
+
+  if (
+    currentQuoteObject &&
+    currentQuoteObject.content === quoteToRemove.content &&
+    currentQuoteObject.author === quoteToRemove.author
+  ) {
+    likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`;
+  }
+
+  return;
 })
 
 function switchTab(tabButtonName) {

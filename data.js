@@ -7,9 +7,11 @@ export class Quote {
     this.author = quoteDetails.author;
   }  
 
-  isFavorite = favorites.some(
+  get isFavorite() {
+    return favorites.some(
     (quote) => quote.content == this.content && quote.author == this.author
-  ); 
+    );
+  }
  
   renderQuote() {
     return {
@@ -20,30 +22,32 @@ export class Quote {
   } 
  
   toggleLike() {
-   if (this.isFavorite){
-    this.isFavorite = false;
-    this.removeFromFavorites(favorites);
-   } else {
-    this.isFavorite = true;
-    this.addToFavorites(favorites)
-   }
+   this.isFavorite ? this.removeFromFavorites(favorites) : this.addToFavorites(favorites)
+   console.log(favorites)
   }
  
   addToFavorites(favorites) {
-    favorites.unshift(this.renderQuote())
-    localStorage.setItem('favorites', JSON.stringify(favorites))
-  }
+    if (!favorites.some((quote) => quote.content === this.content)) {
+      favorites.unshift(this);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+  }  
  
-  removeFromFavorites(favorites) {
-    const index = favorites.findIndex(
-      (quote) => quote.content == this.content && quote.author == this.author
-    )
+  removeFromFavorites(favorites, index = null) {
+    if (index === null) {
+      index = favorites.findIndex(
+        (quote) => quote.content === this.content && quote.author === this.author
+      );
+    }
     favorites.splice(index, 1)
     localStorage.setItem('favorites', JSON.stringify(favorites))
   }
  }
  
- export const favorites = JSON.parse(localStorage.getItem('favorites')) || []
+ export const favorites = (JSON.parse(localStorage.getItem('favorites'))).map(
+  (quoteObject) => new Quote(quoteObject)
+) || []
+
   
  export const quotes = [
   {
