@@ -6,12 +6,47 @@ let likeButton = document.querySelector(".like-button-container");
 const quotesContainer = document.querySelector('.quotes-container');
 const tabButtons = document.querySelectorAll('.tab-button')
 const tabPanels = document.querySelectorAll('.tab-panel')
+const favoritesContainer= document.querySelector('.favorites-container')
 
 tabButtons.forEach((tabButton) => {
   tabButton.addEventListener('click', (event) => {
     event.target.classList.contains('favorites') ? switchTab('favorites') : switchTab('new-quote')
   })
 });
+
+
+generateQuoteButton.addEventListener('click', async () => {
+  currentQuoteObject = await renderQuote();
+  quotesContainer.innerHTML = `${currentQuoteObject.content} - ${currentQuoteObject.author}`
+  likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`
+
+  favorites.forEach((favoriteQuote) => {
+    if (currentQuoteObject.isFavorite ||
+      (currentQuoteObject.content == favoriteQuote.content && currentQuoteObject.author == favoriteQuote.author)) {
+      likeButton.innerHTML = `<img src="images/full-heart.png" alt="like-button" class="like-button">`
+    }
+  })
+})
+
+likeButton.addEventListener('click', () => {
+  currentQuoteObject.toggleLike()
+  likeButton.innerHTML = `<img src="images/${currentQuoteObject.isFavorite ? 'full-heart' : 'empty-heart'}.png" alt="like-button" class="like-button">`
+})
+
+favoritesContainer.addEventListener('click', (event) => {
+  if (!favorites.length && event.target.classList.contains('back-to-new-quotes')){
+    switchTab('new-quote')
+    return
+  }
+
+  const index = event.target.getAttribute('data-index')
+  favorites[index].isFavorite = false;
+  favorites.splice(index, 1)
+  localStorage.setItem('favorites', JSON.stringify(favorites))
+
+  renderFavorites(favorites)
+  favoritesContainer.innerHTML = renderFavorites(favorites);
+})
 
 function switchTab(tabButtonName) {
   tabButtons.forEach((button) =>
@@ -22,33 +57,10 @@ function switchTab(tabButtonName) {
     panel.classList.toggle("active", panel.classList.contains(`${tabButtonName}-container`))
   );
 
-  if (tabButtonName === 'favorites') document.querySelector(`.${tabButtonName}-container`)
-    .innerHTML = renderFavorites(favorites);
-
-}
-
-generateQuoteButton.addEventListener('click', async () => {
-  currentQuoteObject = await renderQuote();
-  quotesContainer.innerHTML = `${currentQuoteObject.content} - ${currentQuoteObject.author}`
-  likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`
-
-  favorites.forEach((favoriteQuote) => {
-    if (currentQuoteObject.content == favoriteQuote.content && currentQuoteObject.author == favoriteQuote.author) {
-      likeButton.innerHTML = `<img src="images/full-heart.png" alt="like-button" class="like-button">`
-      currentQuoteObject.isFavorite = true;
-    }
-  })
-})
-
-likeButton.addEventListener('click', () => {
-  currentQuoteObject.toggleLike()
-  if (currentQuoteObject.isFavorite){
-    likeButton.innerHTML = `<img src="images/full-heart.png" alt="like-button" class="like-button">`
-  } else {
-    likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`
+  if (tabButtonName === 'favorites') {
+    favoritesContainer.innerHTML = renderFavorites(favorites); 
   }
-
-})
+}
 
 async function renderQuote() {
   const APIQuote = await fetchQuote()
@@ -79,15 +91,21 @@ function renderFavorites(favorites) {
   if (!favorites.length) {
     return `<div class="no-favorite-message">You have no favorite quotes</div> 
   <div class="back-to-new-quotes-button">
-    <button class="primary-button">Back to New Quotes</button>
+    <button class="primary-button back-to-new-quotes">Back to New Quotes</button>
   </div>
 `
   }
   let favoritesContainer = ''  
-    favorites.forEach((favoriteQuote) => {
-      favoritesContainer += `<p class="favorite-quote">
-  ${favoriteQuote.content} - ${favoriteQuote.author}
-</p>
-`})
+  favorites.forEach((favoriteQuote, index) => {
+      favoritesContainer += `<div class="favorite-quote-container">
+  <div class="favorite-quote">
+    ${favoriteQuote.content} - ${favoriteQuote.author}
+  </div>
+  <div class="delete-button-container">
+    <img src="images/trash-can.png" alt="delete-button" class="delete-button" data-index="${index}">
+  </div>
+</div>
+  `
+})
   return favoritesContainer
 }

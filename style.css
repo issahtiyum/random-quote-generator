@@ -37,12 +37,12 @@ body{
   width: 500px;
 }
 
-.like-button-container{
+.like-button-container, .delete-button-container{
   width: 30px;
   cursor: pointer;
 }
 
-.like-button{
+.like-button, .delete-button{
   width: 100%;
   height: auto;
 }
@@ -89,6 +89,17 @@ body{
 
 .favorites, .new-quote{
  cursor: pointer;
+}
+
+.favorite-quote-container{
+  margin: 10px 0;
+  display: flex;
+  width: 100%;
+  column-gap: 10px;
+}
+
+.favorite-quote{
+  width: 100%;
 }
 
 .back-to-new-quotes-button{

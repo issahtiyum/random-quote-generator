@@ -1,12 +1,15 @@
 export class Quote {
   content;
   author;
-  isFavorite = false; 
- 
+
   constructor(quoteDetails) {
     this.content = quoteDetails.content;
     this.author = quoteDetails.author;
-  } 
+  }  
+
+  isFavorite = favorites.some(
+    (quote) => quote.content == this.content && quote.author == this.author
+  ); 
  
   renderQuote() {
     return {
@@ -24,11 +27,11 @@ export class Quote {
     this.isFavorite = true;
     this.addToFavorites(favorites)
    }
-   localStorage.setItem('favorites', JSON.stringify(favorites))
   }
  
   addToFavorites(favorites) {
     favorites.unshift(this.renderQuote())
+    localStorage.setItem('favorites', JSON.stringify(favorites))
   }
  
   removeFromFavorites(favorites) {
@@ -36,11 +39,12 @@ export class Quote {
       (quote) => quote.content == this.content && quote.author == this.author
     )
     favorites.splice(index, 1)
+    localStorage.setItem('favorites', JSON.stringify(favorites))
   }
  }
  
  export const favorites = JSON.parse(localStorage.getItem('favorites')) || []
- 
+  
  export const quotes = [
   {
     content: "The best way to predict the future is to create it.", 
