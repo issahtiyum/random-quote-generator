@@ -12,15 +12,6 @@ export class Quote {
     (quote) => quote.content == this.content && quote.author == this.author
     );
   }
- 
-  renderQuote() {
-    return {
-      content: this.content,
-      author: this.author,
-      isFavorite: this.isFavorite
-    }
-  } 
- 
   toggleLike() {
    this.isFavorite ? this.removeFromFavorites(favorites) : this.addToFavorites(favorites)
    console.log(favorites)

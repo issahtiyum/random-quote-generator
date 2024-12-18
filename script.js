@@ -31,20 +31,23 @@ favoritesContainer.addEventListener('click', (event) => {
     switchTab('new-quote')
     return
   }
-  const index = event.target.getAttribute('data-index')
-  const quoteToRemove = favorites[index]
-  quoteToRemove.removeFromFavorites(favorites, index)
-  favoritesContainer.innerHTML = renderFavorites(favorites);
-
-  if (
-    currentQuoteObject &&
-    currentQuoteObject.content === quoteToRemove.content &&
-    currentQuoteObject.author === quoteToRemove.author
-  ) {
-    likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`;
+  else if (event.target.getAttribute('data-index')) {
+    const index = event.target.getAttribute('data-index')
+    const quoteToRemove = favorites[index]
+    quoteToRemove.removeFromFavorites(favorites, index)
+    favoritesContainer.innerHTML = renderFavorites(favorites);
+  
+    if (
+      currentQuoteObject &&
+      currentQuoteObject.content === quoteToRemove.content &&
+      currentQuoteObject.author === quoteToRemove.author
+    ) {
+      likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`;
+    }
+  
+    return;
   }
 
-  return;
 })
 
 function switchTab(tabButtonName) {
