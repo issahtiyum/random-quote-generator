@@ -39,7 +39,7 @@ body{
   width: 500px;
 }
 
-.like-button-container, .delete-button-container{
+.icon-container{
   width: 30px;
   cursor: pointer;
   display: flex;
@@ -47,7 +47,7 @@ body{
   justify-content: center;
 }
 
-.like-button, .delete-button{
+.icon{
   width: 100%;
   height: auto;
 }
@@ -125,4 +125,10 @@ body{
 .tab-button.active {
   font-weight: bold;
   border-bottom: 2px solid #664229;
+}
+
+.like-and-share-container{
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
 }

@@ -3,6 +3,7 @@ import { quotes, Quote, favorites,} from "./data.js";
 let currentQuoteObject;
 let generateQuoteButton = document.querySelector('.quotes-button');
 let likeButton = document.querySelector(".like-button-container");
+const shareButton = document.querySelector(".share-button-container")
 const quotesContainer = document.querySelector('.quotes-container');
 const tabButtons = document.querySelectorAll('.tab-button')
 const tabPanels = document.querySelectorAll('.tab-panel')
@@ -18,12 +19,18 @@ tabButtons.forEach((tabButton) => {
 generateQuoteButton.addEventListener('click', async () => {
   currentQuoteObject = await renderQuote();
   quotesContainer.innerHTML = `${currentQuoteObject.content} - ${currentQuoteObject.author}`
-  likeButton.innerHTML = `<img src="images/${currentQuoteObject.isFavorite ? 'full-heart' : 'empty-heart'}.png" alt="like-button" class="like-button">`
+  likeButton.innerHTML = `<img src="images/${currentQuoteObject.isFavorite ? 'full-heart' : 'empty-heart'}.png" alt="like-button" class="like-button icon">`
+  shareButton.innerHTML = `<img src="images/share.png" alt="share-button" class="share-button icon">`
 })
 
 likeButton.addEventListener('click', () => {
   currentQuoteObject.toggleLike()
-  likeButton.innerHTML = `<img src="images/${currentQuoteObject.isFavorite ? 'full-heart' : 'empty-heart'}.png" alt="like-button" class="like-button">`
+  likeButton.innerHTML = `<img src="images/${currentQuoteObject.isFavorite ? 'full-heart' : 'empty-heart'}.png" alt="like-button" class="like-button icon">`
+  copyToClipboard(currentQuoteObject);
+})
+
+shareButton.addEventListener('click', () => {
+  copyToClipboard(currentQuoteObject);
 })
 
 favoritesContainer.addEventListener('click', (event) => {
@@ -42,7 +49,7 @@ favoritesContainer.addEventListener('click', (event) => {
       currentQuoteObject.content === quoteToRemove.content &&
       currentQuoteObject.author === quoteToRemove.author
     ) {
-      likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button">`;
+      likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button icon">`;
     }
   
     return;
@@ -103,11 +110,23 @@ function renderFavorites(favorites) {
   <div class="favorite-quote">
     ${favoriteQuote.content} - ${favoriteQuote.author}
   </div>
-  <div class="delete-button-container">
-    <img src="images/trash-can.png" alt="delete-button" class="delete-button" data-index="${index}">
+  <div class="delete-button-container icon-container">
+    <img src="images/trash-can.png" alt="delete-button" class="delete-button icon" data-index="${index}">
   </div>
 </div>
   `
 })
   return favoritesContainer
 }
+
+async function copyToClipboard(quoteObjectToCopy) {
+  try {
+    const textToCopy = `"${quoteObjectToCopy.content}"- ${quoteObjectToCopy.author}`
+    await navigator.clipboard.writeText(textToCopy);
+    console.log("Text successfully copied to clipboard!");
+
+  } catch (error) {
+    console.error(`Error: ${error}`);
+  }
+}
+
