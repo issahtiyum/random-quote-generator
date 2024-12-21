@@ -1,13 +1,18 @@
 import { quotes, Quote, favorites,} from "./data.js";
 
 let currentQuoteObject;
+
 let generateQuoteButton = document.querySelector('.quotes-button');
 let likeButton = document.querySelector(".like-button-container");
 const shareButton = document.querySelector(".share-button-container")
-const quotesContainer = document.querySelector('.quotes-container');
+
 const tabButtons = document.querySelectorAll('.tab-button')
 const tabPanels = document.querySelectorAll('.tab-panel')
+
+const quotesContainer = document.querySelector('.quotes-container');
 const favoritesContainer= document.querySelector('.favorites-container')
+
+const notificationsContainer = document.querySelector('.notifications-container')
 
 tabButtons.forEach((tabButton) => {
   tabButton.addEventListener('click', (event) => {
@@ -26,7 +31,7 @@ generateQuoteButton.addEventListener('click', async () => {
 likeButton.addEventListener('click', () => {
   currentQuoteObject.toggleLike()
   likeButton.innerHTML = `<img src="images/${currentQuoteObject.isFavorite ? 'full-heart' : 'empty-heart'}.png" alt="like-button" class="like-button icon">`
-  copyToClipboard(currentQuoteObject);
+  currentQuoteObject.isFavorite ? pushNotification('Quote added to favorites') : pushNotification('Quote removed from favorites')
 })
 
 shareButton.addEventListener('click', () => {
@@ -38,11 +43,12 @@ favoritesContainer.addEventListener('click', (event) => {
     switchTab('new-quote')
     return
   }
-  else if (event.target.getAttribute('data-index')) {
+  else if (event.target.classList.contains('delete-button')) {
     const index = event.target.getAttribute('data-index')
     const quoteToRemove = favorites[index]
     quoteToRemove.removeFromFavorites(favorites, index)
     favoritesContainer.innerHTML = renderFavorites(favorites);
+    pushNotification("Quote removed from favorites", undo)
   
     if (
       currentQuoteObject &&
@@ -51,8 +57,26 @@ favoritesContainer.addEventListener('click', (event) => {
     ) {
       likeButton.innerHTML = `<img src="images/empty-heart.png" alt="like-button" class="like-button icon">`;
     }
+
+    document.querySelector(".undo-button").addEventListener('click', () => {
+      favorites.splice(index, 0, quoteToRemove);
+      pushNotification("Quote added to favorites");
+      favoritesContainer.innerHTML = renderFavorites(favorites);
+      if (
+        currentQuoteObject &&
+        currentQuoteObject.content === quoteToRemove.content &&
+        currentQuoteObject.author === quoteToRemove.author
+      ) {
+        likeButton.innerHTML = `<img src="images/full-heart.png" alt="like-button" class="like-button icon">`;
+      }
+    })
   
     return;
+  }
+  else if (event.target.classList.contains('share-button')){
+    const index = event.target.getAttribute('data-index');
+    const quoteToCopy = favorites[index];
+    copyToClipboard(quoteToCopy)
   }
 
 })
@@ -110,8 +134,13 @@ function renderFavorites(favorites) {
   <div class="favorite-quote">
     ${favoriteQuote.content} - ${favoriteQuote.author}
   </div>
-  <div class="delete-button-container icon-container">
-    <img src="images/trash-can.png" alt="delete-button" class="delete-button icon" data-index="${index}">
+  <div class="favorite-options">
+    <div class="delete-button-container icon-container">
+      <img src="images/trash-can.png" alt="delete-button" class="delete-button icon" data-index="${index}">
+    </div>
+    <div class="share-button-container icon-container">
+      <img src="images/share.png" alt="share-button" class="share-button icon" data-index="${index}">
+    </div>
   </div>
 </div>
   `
@@ -123,6 +152,7 @@ async function copyToClipboard(quoteObjectToCopy) {
   try {
     const textToCopy = `"${quoteObjectToCopy.content}"- ${quoteObjectToCopy.author}`
     await navigator.clipboard.writeText(textToCopy);
+    pushNotification("Quote copied to clipboard!")
     console.log("Text successfully copied to clipboard!");
 
   } catch (error) {
@@ -130,3 +160,19 @@ async function copyToClipboard(quoteObjectToCopy) {
   }
 }
 
+let timeoutId;
+let undo = true;
+function pushNotification(message, undo) {
+  clearTimeout(timeoutId)
+  notificationsContainer.innerHTML = `<div class="notification">${message}. ${undo ? '<span class="undo-button">Undo</span>' : ""} </div>`
+  const notification = document.querySelector('.notification')
+  timeoutId = setTimeout(() => {
+    notification.classList.add('removed')
+  }, 2000)
+
+  notification.addEventListener('transitionend', (event) => {
+    if (event.target == notification){
+      notification.remove()
+    }
+  }, {once: true})
+}

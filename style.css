@@ -10,10 +10,11 @@ body{
   justify-content: center;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   row-gap: 8px;
-  overflow-x: hidden;
 }
 
-
+span{
+  text-decoration: underline;
+}
 
 .primary-button{
   all: unset;
@@ -101,6 +102,8 @@ body{
   display: flex;
   width: 100%;
   column-gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #664229;
 }
 
 .favorite-quote{
@@ -131,4 +134,42 @@ body{
   display: flex;
   flex-direction: row;
   column-gap: 10px;
+}
+.notifications-container {
+  position: fixed;
+  inset: 0 0 85% 0;
+  padding: 16px 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  align-items: center;
+  justify-content: center;
+  transition: height 0.5s ease-out;
+  z-index: 9999;
+}
+
+.notification {
+  all: unset;
+  background-color: #664229;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.notification.removed {
+  opacity: 0;
+  transform: translateY(-20px); 
+}
+
+.favorite-options{
+  display: flex;
+  column-gap: 10px;
+
+}
+
+.undo-button{
+  cursor: pointer;
 }

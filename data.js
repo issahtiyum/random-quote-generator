@@ -14,7 +14,6 @@ export class Quote {
   }
   toggleLike() {
    this.isFavorite ? this.removeFromFavorites(favorites) : this.addToFavorites(favorites)
-   console.log(favorites)
   }
  
   addToFavorites(favorites) {
