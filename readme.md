@@ -5,6 +5,7 @@ A simple web application that generates random quotes. Users can refresh to see 
 
 ## Table of Contents
 - [Features](#features)
+-[Screenshots](#screenshots)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
@@ -16,6 +17,10 @@ A simple web application that generates random quotes. Users can refresh to see 
 - Option to add quotes to favorites by liking quotes
 - Option to copy quote to clipboard to share with others
 
+## Screenshots
+![Generated Quote](https://github.com/issahtiyum/random-quote-generator/blob/main/images/quote.png "Generated Quote")
+![Quote Added to Favorites](https://github.com/issahtiyum/random-quote-generator/blob/main/images/liked-quote.png "Quote Added to Favorites")
+![Favorite Quotes](https://github.com/issahtiyum/random-quote-generator/blob/main/images/favorite-quotes.png "Favorite Quotes")
 ## Usage
 1. Click the 'Generate' button to display a random quote.
 2. Click 'Copy' to save the quote to your clipboard .
