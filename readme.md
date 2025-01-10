@@ -5,7 +5,7 @@ A simple web application that generates random quotes. Users can refresh to see 
 
 ## Table of Contents
 - [Features](#features)
--[Screenshots](#screenshots)
+- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
